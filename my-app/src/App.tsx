@@ -3,7 +3,16 @@ import NavBar from './components/navbar';
 import Counters from "./components/counters";
 import './App.css';
 
-class App extends Component  
+interface ICounter {
+  id: number;
+  value: number;
+}
+
+interface IAppState {
+  counters: ICounter[];
+}
+
+class App extends Component<{}, IAppState>
 {
   state = {
       counters: [
@@ -20,7 +29,17 @@ class App extends Component
       counters[index] = {...counter};
       counters[index].value++;
       this.setState({counters});
+  }
 
+  handleDecrement = (counter: {id:number, value:number}) => {
+    const counters = [...this.state.counters]; // clones the array
+    const index = counters.indexOf(counter);
+
+    if(counters[index].value > 0){
+      counters[index] = {...counter};
+      counters[index].value--;
+      this.setState({counters}); 
+    }
   }
 
   handleReset = () => {
@@ -30,6 +49,19 @@ class App extends Component
           return c;
       });
       this.setState({ counters});
+  }
+  handleAdd = () => {
+
+    this.setState((prevState) => {
+      return {
+        counters: [
+          ...prevState.counters,
+          { id: prevState.counters.length, value: 0 }
+        ]
+      }
+    }, () => {
+      console.log('the state updated!')
+    })
   }
 
   handleDelete = (counterId: number) => {
@@ -48,7 +80,9 @@ class App extends Component
           <Counters 
             counters={this.state.counters} 
             onReset={this.handleReset}
+            onAdd={this.handleAdd}
             onIncrement={this.handleIncrement}
+            onDecrement={this.handleDecrement}
             onDelete={this.handleDelete}
           />
         </main>

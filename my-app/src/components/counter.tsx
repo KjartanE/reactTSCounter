@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
  
 //receives onDelete function from parent
-class Counter extends Component <{counter: {id:number, value:number}, onIncrement: (counter: {id:number, value:number}) => void ,  onDelete: (id: number) => void}> {
+class Counter extends Component 
+    <{
+        counter: {id:number, value:number}, 
+        onIncrement: (counter: {id:number, value:number}) => void , 
+        onDecrement: (counter: {id:number, value:number}) => void ,  
+        onDelete: (id: number) => void
+    }> 
+{
 
     render() {
 
         return (
         <div>
-            <span className= {this.getBadgeClasses()}>{this.formatCount()}</span>
             <button 
                 onClick={() => this.props.onIncrement(this.props.counter)} 
-                className='btn btn-seconday btn-sm'
-            >
-                Increment
+                className='btn btn-seconday btn-sm'>
+                +
+            </button>
+            <span className= {this.getBadgeClasses()}>{this.formatCount()}</span>
+            <button 
+                onClick={() => this.props.onDecrement(this.props.counter)} 
+                className='btn btn-seconday btn-sm'>
+                -
             </button>
             <button 
                 onClick={ () => this.props.onDelete(this.props.counter.id) } 
